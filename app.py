@@ -20,6 +20,8 @@ app.secret_key = secrets.token_hex(32)  # Clé secrète pour les sessions
 csrf = CSRFProtect(app)  # Activation de la protection CSRF
 CORS(app)
 
+key_static = 'avatVRKqyldREW2vwYeBd9ltNboJGPsXRetLipCxyLY'
+
 auth_manager = AuthManager()
 
 
@@ -32,7 +34,7 @@ def check_user_session():
 @app.before_request
 def check_login():
     # Exclude login/static routes from check
-    if request.endpoint and request.endpoint not in ['login', 'static']:
+    if request.endpoint and request.endpoint not in ['login', 'static', 'favicon', 'test', 'register']:
         redirect_response = check_user_session()
         if redirect_response:
             return redirect_response
@@ -124,6 +126,10 @@ def init_program():
     user_token = auth_manager.get_user_token_from_jwt(jwt)
     result = initialize_or_load_program(user_token)
     return jsonify(result)
+
+@app.route('/test', methods=['GET'])
+def test():
+    return jsonify({'success': True, 'message': 'Mams le boss'})
 
 @app.route('/chat', methods=['POST'])
 @login_required
@@ -253,6 +259,144 @@ def get_chat_suggestions():
         
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
+    
+@app.route('/user-token', methods=['GET'])
+@login_required
+def get_user_token():
+    """Returns the user token for the authenticated user"""
+    try:
+        jwt = session.get('user_token')
+        user_token = auth_manager.get_user_token_from_jwt(jwt)
+        return jsonify({
+            'success': True,
+            'user_token': user_token
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/auth-token', methods=['GET'])
+@login_required
+def get_auth_token():
+    """Returns the JWT auth token for API requests"""
+    try:
+        jwt = session.get('user_token')
+        return jsonify({
+            'success': True,
+            'auth_token': jwt
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+# === Routes de l'API ===
+
+# API key management
+@app.route('/api/generate-key', methods=['POST'])
+def api_generate_api_key():
+    return jsonify({'success': True, 'api_key': key_static})
+
+# Program routes
+@app.route('/api/init-program', methods=['GET'])
+def api_init_program():
+    return jsonify(initialize_or_load_program(key_static))
+
+@app.route('/api/chat', methods=['POST'])
+def api_chat():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Invalid request format'}), 400
+
+    data = request.get_json()
+    message = data.get('message')
+    history = data.get('history', [])
+    
+    if not message:
+        return jsonify({'success': False, 'error': 'Missing message'}), 400
+        
+    json_objects, explanation, response = process_llm_request(
+        message, 
+        context_program=get_sorted_sessions(key_static),
+        message_history=history
+    )
+    
+    if json_objects:
+        apply_changes(json_objects, key_static)
+        return jsonify({
+            'success': True, 
+            'response': explanation if explanation else response,
+            'program': get_sorted_sessions(key_static),
+            'changes_made': True
+        })
+    
+    return jsonify({
+        'success': True,
+        'response': response,
+        'changes_made': False
+    })
+
+@app.route('/api/program', methods=['GET'])
+def api_get_program():
+    return jsonify({
+        'success': True,
+        'profile': get_profile(key_static),
+        'program': get_sorted_sessions(key_static)
+    })
+
+@app.route('/api/calendar/<user_id>/calendar.ics')
+def api_get_calendar(user_id):
+    try:
+        calendar_manager = CalendarManager()
+        ics_content = calendar_manager.generate_ics(user_id, key_static)
+        
+        response = Response(ics_content)
+        response.headers.update({
+            'Content-Type': 'text/calendar; charset=utf-8',
+            'Content-Disposition': f'inline; filename=running_program_{user_id}.ics',
+            'Cache-Control': 'public, max-age=3600'
+        })
+        return response
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/calendar-url/<user_id>')
+def api_get_calendar_url(user_id):
+    try:
+        base_url = request.url_root.rstrip('/')
+        calendar_manager = CalendarManager()
+        feed_url = calendar_manager.generate_ics_feed_url(base_url, user_id)
+        
+        return jsonify({
+            'success': True,
+            'urls': {
+                'ics_feed': feed_url,
+                'google_calendar': f"https://www.google.com/calendar/render?cid={urllib.parse.quote(feed_url)}",
+                'ical': f"webcal://{urllib.parse.urlparse(feed_url).netloc}/api/calendar/{user_id}/calendar.ics"
+            }
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+@app.route('/api/chat-suggestions', methods=['POST'])
+def api_get_chat_suggestions():
+    if not request.is_json:
+        return jsonify({'success': False, 'error': 'Invalid request format'}), 400
+
+    data = request.get_json()
+    message = data.get('message')
+    history = data.get('history', [])
+    
+    if not message:
+        return jsonify({'success': False, 'error': 'Missing message'}), 400
+        
+    suggestions = process_suggestions_request(
+        message, 
+        context_program=get_sorted_sessions(key_static),
+        message_history=history
+    )
+    
+    return jsonify({
+        'success': True,
+        'suggestions': suggestions
+    })
+
 
 # === Routes statiques ===
 
