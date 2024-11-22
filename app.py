@@ -1,73 +1,174 @@
-# app.py
-from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask import Flask, render_template, request, jsonify, send_from_directory, session, redirect, url_for, make_response
 from flask_cors import CORS
+from flask_wtf.csrf import CSRFProtect
 from llm_handler import process_llm_request, process_suggestions_request
 from session_manager import apply_changes, get_sorted_sessions, get_profile, initialize_or_load_program
 from calendar_manager import CalendarManager
+from flask_restx import Api, Resource, fields
+from functools import wraps
 from flask import Response
 import urllib.parse
+from auth import AuthManager
+import secrets
 
 app = Flask(__name__, 
-    static_folder='static',  # Dossier pour les fichiers statiques
-    template_folder='templates'  # Dossier pour les templates
+    static_folder='static',
+    template_folder='templates'
 )
+
+app.secret_key = secrets.token_hex(32)  # Clé secrète pour les sessions
+csrf = CSRFProtect(app)  # Activation de la protection CSRF
 CORS(app)
 
+auth_manager = AuthManager()
 
+
+def check_user_session():
+    jwt = session.get('user_token')
+    if not jwt or not auth_manager.verify_token(jwt):
+        return redirect(url_for('login'))
+    return None
+
+@app.before_request
+def check_login():
+    # Exclude login/static routes from check
+    if request.endpoint and request.endpoint not in ['login', 'static']:
+        redirect_response = check_user_session()
+        if redirect_response:
+            return redirect_response
+
+# Décorateur pour vérifier l'authentification
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_token' not in session:
+            print("Authentication required")
+            return jsonify({'success': False, 'error': 'Authentication required'}), 401
+        return f(*args, **kwargs)
+    return decorated_function
+
+# === Routes d'authentification ===
 
 @app.route('/')
 def index():
-    """Render the main page"""
-    return render_template('index.html')
+    """Route principale - redirige vers le dashboard si connecté"""
+    if 'user_token' in session:
+        return redirect(url_for('dashboard'))
+    return redirect(url_for('login'))
 
-# Routes pour servir les fichiers statiques
-@app.route('/static/<path:filename>')
-def serve_static(filename):
-    return send_from_directory(app.static_folder, filename)
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    """Gestion de la connexion"""
+    if 'user_token' in session:
+        return redirect(url_for('dashboard'))
 
-@app.route('/init-program', methods=['POST'])
+    if request.method == 'GET':
+        return render_template('login.html')
+    
+    if not request.is_json:
+        return jsonify({'success': False, 'message': 'Format de requête invalide'}), 400
+
+    data = request.get_json()
+    if not data or 'username' not in data or 'password' not in data:
+        return jsonify({'success': False, 'message': 'Données manquantes'}), 400
+
+    success, result = auth_manager.login(data['username'], data['password'])
+    if success:
+        session['user_token'] = result
+        session.permanent = True  # Cookie de session persistant
+        return jsonify({'success': True, 'redirect': url_for('dashboard')})
+    
+    return jsonify({'success': False, 'message': result}), 401
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    """Gestion de l'inscription"""
+    if 'user_token' in session:
+        return redirect(url_for('dashboard'))
+
+    if request.method == 'GET':
+        return render_template('register.html')
+    
+    if not request.is_json:
+        return jsonify({'success': False, 'message': 'Format de requête invalide'}), 400
+
+    data = request.get_json()
+    if not data or 'username' not in data or 'password' not in data:
+        return jsonify({'success': False, 'message': 'Données manquantes'}), 400
+
+    success, message = auth_manager.register(data['username'], data['password'])
+    if success:
+        return jsonify({'success': True, 'message': message})
+    
+    return jsonify({'success': False, 'message': message}), 400
+
+@app.route('/logout')
+def logout():
+    """Déconnexion de l'utilisateur"""
+    session.clear()
+    return redirect(url_for('login'))
+
+# === Routes protégées ===
+
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    """Page du tableau de bord"""
+    return render_template('dashboard.html')
+
+@app.route('/init-program', methods=['GET'])
+@login_required
 def init_program():
     """Initialize or load the training program"""
-    result = initialize_or_load_program()
+    jwt = session.get('user_token')
+    user_token = auth_manager.get_user_token_from_jwt(jwt)
+    result = initialize_or_load_program(user_token)
     return jsonify(result)
 
 @app.route('/chat', methods=['POST'])
+@login_required
 def chat():
-    """Handle chat messages"""
-    try:
-        message = request.json.get('message')
-        history = request.json.get('history', [])
-        
-        if not message:
-            return jsonify({'success': False, 'error': 'No message provided'})
-            
-        json_objects, explanation, response = process_llm_request(
-            message, 
-            context_program=get_sorted_sessions(),
-            message_history=history
-        )
-        
-        if json_objects:
-            apply_changes(json_objects)
-            return jsonify({
-                'success': True,
-                'response': explanation if explanation else response,
-                'program': get_sorted_sessions(),
-                'changes_made': True
-            })
-        
-        return jsonify({
-            'success': True,
-            'response': response,
-            'changes_made': False
-        })
-        
-    except Exception as e:
-        return jsonify({'success': False, 'error': str(e)})
+   try:
+       if not request.is_json:
+           return jsonify({'success': False, 'error': 'Format de requête invalide'}), 400
+
+       data = request.get_json()
+       message = data.get('message')
+       history = data.get('history', [])
+       jwt = session.get('user_token')
+       user_token = auth_manager.get_user_token_from_jwt(jwt)
+       
+       if not message:
+           return jsonify({'success': False, 'error': 'Message manquant'}), 400
+           
+       json_objects, explanation, response = process_llm_request(
+           message, 
+           context_program=get_sorted_sessions(user_token),
+           message_history=history
+       )
+       
+       if json_objects:
+           apply_changes(json_objects, user_token)
+           return jsonify({
+               'success': True, 
+               'response': explanation if explanation else response,
+               'program': get_sorted_sessions(user_token=user_token),
+               'changes_made': True
+           })
+       
+       return jsonify({
+           'success': True,
+           'response': response,
+           'changes_made': False
+       })
+       
+   except Exception as e:
+       return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/get-program', methods=['GET'])
+@login_required
 def get_program():
-    """Get the current program"""
+    """Récupération du programme"""
     try:
         return jsonify({
             'success': True,
@@ -75,60 +176,69 @@ def get_program():
             'program': get_sorted_sessions()
         })
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)})
+        return jsonify({'success': False, 'error': str(e)}), 500
 
-@app.route('/calendar.ics')
-def get_calendar():
-    """Generate and return the ICS calendar file"""
+@app.route('/calendar/<user_token>/calendar.ics')
+def get_calendar(user_token):
+    """Génération du calendrier ICS pour un utilisateur spécifique"""
     try:
+        jwt = session.get('user_token')
+        verified_user_token = auth_manager.get_user_token_from_jwt(jwt)
+        
+        if verified_user_token != user_token:
+            return jsonify({'success': False, 'error': 'Unauthorized access'}), 403
+            
         calendar_manager = CalendarManager()
-        ics_content = calendar_manager.generate_ics()
+        ics_content = calendar_manager.generate_ics(user_token)
         
         response = Response(ics_content)
-        response.headers['Content-Type'] = 'text/calendar; charset=utf-8'
-        response.headers['Content-Disposition'] = 'inline; filename=running_program.ics'
-        # Allow caching for 1 hour
-        response.headers['Cache-Control'] = 'public, max-age=3600'
+        response.headers.update({
+            'Content-Type': 'text/calendar; charset=utf-8',
+            'Content-Disposition': f'inline; filename=running_program_{user_token}.ics',
+            'Cache-Control': 'public, max-age=3600'
+        })
         
         return response
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/calendar-url')
+@login_required
 def get_calendar_url():
-    """Return the calendar subscription URL"""
+    """URLs du calendrier pour l'utilisateur connecté"""
     try:
-        # Get the base URL of the application
+        jwt = session.get('user_token')
+        user_token = auth_manager.get_user_token_from_jwt(jwt)
+        
         base_url = request.url_root.rstrip('/')
         calendar_manager = CalendarManager()
-        
-        # Generate the feed URL
-        feed_url = calendar_manager.generate_ics_feed_url(base_url)
-        
-        # Generate URLs for different calendar services
-        google_url = f"https://www.google.com/calendar/render?cid={urllib.parse.quote(feed_url)}"
-        ical_url = f"webcal://{urllib.parse.urlparse(feed_url).netloc}/calendar.ics"
+        feed_url = calendar_manager.generate_ics_feed_url(base_url, user_token)
         
         return jsonify({
             'success': True,
             'urls': {
                 'ics_feed': feed_url,
-                'google_calendar': google_url,
-                'ical': ical_url
+                'google_calendar': f"https://www.google.com/calendar/render?cid={urllib.parse.quote(feed_url)}",
+                'ical': f"webcal://{urllib.parse.urlparse(feed_url).netloc}/calendar/{user_token}/calendar.ics"
             }
         })
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)}), 500
 
 @app.route('/chat-suggestions', methods=['POST'])
+@login_required
 def get_chat_suggestions():
-    """Generate multiple response suggestions for a chat message"""
+    """Suggestions pour le chat"""
     try:
-        message = request.json.get('message')
-        history = request.json.get('history', [])
+        if not request.is_json:
+            return jsonify({'success': False, 'error': 'Format de requête invalide'}), 400
+
+        data = request.get_json()
+        message = data.get('message')
+        history = data.get('history', [])
         
         if not message:
-            return jsonify({'success': False, 'error': 'No message provided'})
+            return jsonify({'success': False, 'error': 'Message manquant'}), 400
             
         suggestions = process_suggestions_request(
             message, 
@@ -142,12 +252,37 @@ def get_chat_suggestions():
         })
         
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)})
+        return jsonify({'success': False, 'error': str(e)}), 500
 
-#favicon
+# === Routes statiques ===
+
 @app.route('/favicon.ico')
 def favicon():
+    """Route pour le favicon"""
     return app.send_static_file('favicon.ico')
+
+@app.route('/static/<path:filename>')
+def serve_static(filename):
+    """Route pour les fichiers statiques"""
+    return send_from_directory(app.static_folder, filename)
+
+# === Configuration de sécurité ===
+
+@app.after_request
+def add_security_headers(response):
+    """Ajout des headers de sécurité"""
+    response.headers.update({
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'SAMEORIGIN',
+        'X-XSS-Protection': '1; mode=block',
+        'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+        'Content-Security-Policy': "default-src 'self'; "
+                                 "style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.tailwindcss.com; "
+                                 "font-src 'self' https://cdnjs.cloudflare.com; "
+                                 "script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com"
+    })
+    return response
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=18091)

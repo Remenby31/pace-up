@@ -338,6 +338,7 @@ def process_llm_request(user_input, context_program=None, message_history=None):
     
     Parameters:
     - user_input (str): The user's request
+    - user_token (str): The user's unique identifier
     - context_program (dict/list/str): The current training program in JSON format
     - message_history (list): List of previous messages with roles and content
     """

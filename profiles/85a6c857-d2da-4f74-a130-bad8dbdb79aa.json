@@ -1,0 +1,199 @@
+{
+    "profile": {
+        "age": 32,
+        "poids": 70,
+        "taille": 175,
+        "frequence_hebdomadaire": "3-4 fois par semaine",
+        "meilleure_distance_recente": "10 km",
+        "objectif_principal": "semi marathon",
+        "distance_cible": "21.1 km",
+        "chrono_cible": "1h50",
+        "temps_actuel_5km": "25 minutes",
+        "temps_actuel_10km": "60 minutes",
+        "jours_disponibles_par_semaine": 4,
+        "jour_sortie_longue": "Dimanche",
+        "goal_date": "2025-01-15"
+    },
+    "sessions": [
+        {
+            "date": "2024-11-24 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 10,
+            "description": "Sortie longue à un rythme confortable. L'objectif est de courir sans se presser pour habituer le corps à la durée de l'effort."
+        },
+        {
+            "date": "2024-11-26 18:00",
+            "type_de_seance": "Endurance",
+            "distance": 5,
+            "description": "Course à un rythme modéré, visant à améliorer l'endurance de base."
+        },
+        {
+            "date": "2024-11-29 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 6,
+            "description": "Échauffement de 10 minutes, puis 5 x 400m à allure rapide (1:50/400m) avec 2 minutes de récupération entre chaque intervalle. Terminer par 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-11-30 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 8,
+            "description": "Échauffement de 10 minutes, puis 20 minutes à un rythme soutenu (environ 5:30/km), suivi de 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-01 09:30",
+            "type_de_seance": "Sortie Longue",
+            "distance": 12,
+            "description": "Sortie longue à un rythme confortable. Augmenter la distance pour habituer le corps à des efforts plus longs."
+        },
+        {
+            "date": "2024-12-03 18:00",
+            "type_de_seance": "Endurance",
+            "distance": 6,
+            "description": "Course à un rythme modéré. L'objectif est de maintenir une conversation tout en courant."
+        },
+        {
+            "date": "2024-12-06 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 8,
+            "description": "Échauffement de 10 minutes, puis 4 x 800m à allure rapide (3:50/km) avec 3 minutes de récupération. Terminer par 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-07 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 10,
+            "description": "Échauffement de 10 minutes, puis 25 minutes à un rythme soutenu (5:30/km), suivi de 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-08 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 14,
+            "description": "Sortie longue à un rythme confortable. Accent sur le maintien d'une bonne technique de course."
+        },
+        {
+            "date": "2024-12-10 18:00",
+            "type_de_seance": "Endurance",
+            "distance": 7,
+            "description": "Course à un rythme modéré. Continuer à construire l'endurance."
+        },
+        {
+            "date": "2024-12-13 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 8,
+            "description": "Échauffement de 10 minutes, puis 5 x 600m à allure rapide (3:50/km) avec 3 minutes de récupération. Terminer par 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-14 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 12,
+            "description": "Échauffement de 10 minutes, puis 30 minutes à un rythme soutenu (5:20/km), suivi de 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-15 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 16,
+            "description": "Sortie longue à un rythme confortable. Travailler sur l'hydratation et la nutrition pendant la course."
+        },
+        {
+            "date": "2024-12-17 18:00",
+            "type_de_seance": "Endurance",
+            "distance": 8,
+            "description": "Course à un rythme modéré, accent sur la récupération active."
+        },
+        {
+            "date": "2024-12-20 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 10,
+            "description": "Échauffement de 10 minutes, puis 4 x 1000m à allure rapide (4:00/km) avec 3 minutes de récupération. Terminer par 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-21 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 14,
+            "description": "Échauffement de 10 minutes, puis 35 minutes à un rythme soutenu (5:15/km), suivi de 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-22 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 18,
+            "description": "Sortie longue à un rythme confortable. Tester l'alimentation et l'hydratation sur la distance."
+        },
+        {
+            "date": "2024-12-24 18:00",
+            "type_de_seance": "Endurance",
+            "distance": 10,
+            "description": "Course à un rythme modéré, accent sur la forme et l'économie de course."
+        },
+        {
+            "date": "2024-12-27 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 12,
+            "description": "Échauffement de 10 minutes, puis 5 x 800m à allure rapide (4:00/km) avec 3 minutes de récupération. Terminer par 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-28 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 16,
+            "description": "Échauffement de 10 minutes, puis 40 minutes à un rythme soutenu (5:10/km), suivi de 10 minutes de retour au calme."
+        },
+        {
+            "date": "2024-12-29 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 20,
+            "description": "Sortie longue à un rythme confortable. Focus sur la gestion de l'énergie sur la distance."
+        },
+        {
+            "date": "2024-12-31 18:00",
+            "type_de_seance": "Endurance",
+            "distance": 12,
+            "description": "Course à un rythme modéré, accent sur la récupération active."
+        },
+        {
+            "date": "2025-01-03 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 12,
+            "description": "Échauffement de 10 minutes, puis 4 x 1000m à allure rapide (4:00/km) avec 3 minutes de récupération. Terminer par 10 minutes de retour au calme."
+        },
+        {
+            "date": "2025-01-04 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 18,
+            "description": "Échauffement de 10 minutes, puis 45 minutes à un rythme soutenu (5:05/km), suivi de 10 minutes de retour au calme."
+        },
+        {
+            "date": "2025-01-05 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 14,
+            "description": "Sortie longue à un rythme confortable. Récupération et préparation pour la course."
+        },
+        {
+            "date": "2025-01-08 18:00",
+            "type_de_seance": "Endurance",
+            "distance": 8,
+            "description": "Course à un rythme modéré, accent sur la forme et l'économie de course."
+        },
+        {
+            "date": "2025-01-10 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 6,
+            "description": "Échauffement de 10 minutes, puis 3 x 800m à allure rapide (4:00/km) avec 3 minutes de récupération. Terminer par 10 minutes de retour au calme."
+        },
+        {
+            "date": "2025-01-11 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 10,
+            "description": "Échauffement de 10 minutes, puis 30 minutes à un rythme soutenu (5:00/km), suivi de 10 minutes de retour au calme."
+        },
+        {
+            "date": "2025-01-14 18:00",
+            "type_de_seance": "Récupération",
+            "distance": 5,
+            "description": "Course très légère pour garder les jambes actives avant la course. À un rythme très tranquille."
+        },
+        {
+            "date": "2025-01-15 08:00",
+            "type_de_seance": "Semi-Marathon",
+            "distance": 21.1,
+            "description": "Jour de la course ! Échauffement léger avant le départ, puis courir le semi-marathon à l'objectif de 1h50."
+        }
+    ]
+}

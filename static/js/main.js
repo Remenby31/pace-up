@@ -2,12 +2,12 @@
 let currentlySelectedSession = null;
 let messageHistory = [];
 
-
 // Initialize the app
 window.addEventListener('DOMContentLoaded', async () => {
     try {
         const response = await fetch('/init-program', {
-            method: 'POST'
+            method: 'GET',
+            credentials: 'include'
         });
         const data = await response.json();
         
@@ -25,15 +25,14 @@ window.addEventListener('DOMContentLoaded', async () => {
                 addMessage('coach', "Comment puis-je vous aider aujourd'hui ?");
             }
         } else {
-            addMessage('error', data.error);
+            addMessage('error', data.error); 
         }
-
-        await initializeCalendarSync();
-
+ 
     } catch (error) {
         addMessage('error', "Erreur lors de l'initialisation du programme");
+        console.error(error);
     }
-});
+ });
 
 // Chat form submission
 document.getElementById('chat-form').addEventListener('submit', async (e) => {
@@ -52,13 +51,16 @@ document.getElementById('chat-form').addEventListener('submit', async (e) => {
         const response = await fetch('/chat', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
             },
+            credentials: 'include',
             body: JSON.stringify({ 
                 message,
-                history: messageHistory.slice(-10) // Send last 10 messages for context
+                history: messageHistory.slice(-10)
             })
         });
+        
         
         const data = await response.json();
         
@@ -203,23 +205,74 @@ function clearSelectedSession() {
     }
     currentlySelectedSession = null;
 }
-
-// Calendar fonctions
+// Calendar sync initialization and menu management
 async function initializeCalendarSync() {
     try {
-        const response = await fetch('/calendar-url');
+        const response = await fetch('/calendar-url', {
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+            },
+            credentials: 'include'
+        });
         const data = await response.json();
         
         if (data.success) {
             window.calendarUrls = data.urls;
+            // Activer le bouton de synchronisation une fois les URLs chargées
+            const syncButton = document.querySelector('.calendar-sync-button');
+            if (syncButton) {
+                syncButton.disabled = false;
+            }
         } else {
-            console.error('Failed to fetch calendar URLs');
+            showError('Erreur lors du chargement des URLs du calendrier');
         }
     } catch (error) {
-        console.error('Error initializing calendar sync:', error);
+        showError('Erreur de connexion au serveur');
+        console.error('Error:', error);
     }
 }
 
+function showError(message) {
+    const notification = document.createElement('div');
+    notification.className = 'error-notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    setTimeout(() => notification.remove(), 3000);
+}
+
+async function downloadCalendar() {
+    try {
+        if (!window.calendarUrls?.ics_feed) {
+            showError('URL du calendrier non disponible');
+            return;
+        }
+
+        const response = await fetch(window.calendarUrls.ics_feed, {
+            headers: {
+                'X-CSRFToken': document.querySelector('meta[name="csrf-token"]').content
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) throw new Error('Erreur lors du téléchargement');
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'running_program.ics';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+    } catch (error) {
+        showError('Erreur lors du téléchargement du calendrier');
+        console.error('Error:', error);
+    }
+}
+
+// Les autres fonctions restent identiques
 function showCalendarMenu(event) {
     event.preventDefault();
     
@@ -233,28 +286,34 @@ function showCalendarMenu(event) {
     const menu = document.createElement('div');
     menu.className = 'calendar-sync-menu';
     menu.innerHTML = `
-        <div class="calendar-sync-menu-item" onclick="copyCalendarUrl('ics_feed')">
+        <div class="calendar-sync-menu-item" onclick="downloadCalendar()">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"/>
                 <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z"/>
             </svg>
-            Copier l'URL du calendrier
+            Télécharger le calendrier
+        </div>
+        <div class="calendar-sync-menu-item" onclick="copyCalendarUrl('ics_feed')">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M8 2a1 1 0 000 2h2a1 1 0 100-2H8z"/>
+                <path d="M3 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v6h-4.586l1.293-1.293a1 1 0 00-1.414-1.414l-3 3a1 1 0 000 1.414l3 3a1 1 0 001.414-1.414L10.414 13H15v3a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm12 6h2a1 1 0 110 2h-2v-2z"/>
+            </svg>
+            Copier l'URL
         </div>
         <div class="calendar-sync-menu-item" onclick="openCalendarUrl('google_calendar')">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M15 5v2a2 2 0 01-2 2H7a2 2 0 01-2-2V5a2 2 0 012-2h6a2 2 0 012 2zm-2 4v8a2 2 0 01-2 2H7a2 2 0 01-2-2V9h8z"/>
             </svg>
-            Ajouter à Google Calendar
+            Google Calendar
         </div>
         <div class="calendar-sync-menu-item" onclick="openCalendarUrl('ical')">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"/>
             </svg>
-            Ajouter à Apple/Outlook
+            Apple/Outlook
         </div>
     `;
     
-    // Position the menu
     const buttonRect = button.getBoundingClientRect();
     menu.style.top = `${buttonRect.bottom + window.scrollY + 5}px`;
     menu.style.left = `${buttonRect.left + window.scrollX}px`;
@@ -262,7 +321,6 @@ function showCalendarMenu(event) {
     document.body.appendChild(menu);
     setTimeout(() => menu.classList.add('active'), 0);
     
-    // Close menu when clicking outside
     document.addEventListener('click', function closeMenu(e) {
         if (!menu.contains(e.target) && e.target !== button) {
             menu.remove();
@@ -272,8 +330,8 @@ function showCalendarMenu(event) {
 }
 
 async function copyCalendarUrl(type) {
-    if (!window.calendarUrls || !window.calendarUrls[type]) {
-        console.error('Calendar URL not available');
+    if (!window.calendarUrls?.[type]) {
+        showError('URL du calendrier non disponible');
         return;
     }
     
@@ -281,13 +339,14 @@ async function copyCalendarUrl(type) {
         await navigator.clipboard.writeText(window.calendarUrls[type]);
         showCopySuccess();
     } catch (err) {
-        console.error('Failed to copy URL:', err);
+        showError('Erreur lors de la copie');
+        console.error('Error:', err);
     }
 }
 
 function openCalendarUrl(type) {
-    if (!window.calendarUrls || !window.calendarUrls[type]) {
-        console.error('Calendar URL not available');
+    if (!window.calendarUrls?.[type]) {
+        showError('URL du calendrier non disponible');
         return;
     }
     
@@ -299,8 +358,8 @@ function showCopySuccess() {
     notification.className = 'copy-success';
     notification.textContent = 'URL copiée avec succès !';
     document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+    setTimeout(() => notification.remove(), 3000);
 }
+
+// Initialiser la synchronisation du calendrier au chargement
+document.addEventListener('DOMContentLoaded', initializeCalendarSync);
