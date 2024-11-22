@@ -1,0 +1,62 @@
+{
+  "resource_state": 2,
+  "athlete": {
+    "id": 41378036,
+    "resource_state": 1
+  },
+  "name": "Course \u00e0 pied matinale",
+  "distance": 2162.4,
+  "moving_time": 727,
+  "elapsed_time": 740,
+  "total_elevation_gain": 5.2,
+  "type": "Run",
+  "sport_type": "Run",
+  "workout_type": 0,
+  "id": 10023569702,
+  "start_date": "2023-10-12T08:01:10Z",
+  "start_date_local": "2023-10-12T10:01:10Z",
+  "timezone": "(GMT+01:00) Europe/Paris",
+  "utc_offset": 7200.0,
+  "location_city": null,
+  "location_state": null,
+  "location_country": null,
+  "achievement_count": 0,
+  "kudos_count": 0,
+  "comment_count": 0,
+  "athlete_count": 1,
+  "photo_count": 0,
+  "map": {
+    "id": "a10023569702",
+    "summary_polyline": "cykhGq~nGLy@Aw@Qg@w@yAIqAc@_C@MLa@P[Po@^y@XcA?KCO[a@CSDMNKr@A\\@p@SfAe@HAFDFHL|@HTLRbAbA`An@`At@\\b@Vf@Rt@b@lADp@f@bBt@hBj@`BhApCVz@XfBP~BVvB?r@Ir@u@fBy@fBi@~AGDGAc@a@c@Wg@UM?I@e@`@IBY@c@Ew@_@u@g@KCKS",
+    "resource_state": 2
+  },
+  "trainer": false,
+  "commute": false,
+  "manual": false,
+  "private": true,
+  "visibility": "only_me",
+  "flagged": false,
+  "gear_id": null,
+  "start_latlng": [
+    43.48322027362883,
+    1.3898456934839487
+  ],
+  "end_latlng": [
+    43.483232175931334,
+    1.3898471184074879
+  ],
+  "average_speed": 2.974,
+  "max_speed": 4.122,
+  "has_heartrate": false,
+  "heartrate_opt_out": false,
+  "display_hide_heartrate_option": false,
+  "elev_high": 163.9,
+  "elev_low": 158.6,
+  "upload_id": 10739896201,
+  "upload_id_str": "10739896201",
+  "external_id": "F7BB256A-217F-4376-857C-C97C4566ADA5-activity.fit",
+  "from_accepted_tag": false,
+  "pr_count": 0,
+  "total_photo_count": 0,
+  "has_kudoed": false
+}

@@ -1,0 +1,62 @@
+{
+  "resource_state": 2,
+  "athlete": {
+    "id": 41378036,
+    "resource_state": 1
+  },
+  "name": "Course \u00e0 pied le soir",
+  "distance": 3158.1,
+  "moving_time": 1379,
+  "elapsed_time": 1728,
+  "total_elevation_gain": 71.8,
+  "type": "Run",
+  "sport_type": "Run",
+  "workout_type": 0,
+  "id": 11354115447,
+  "start_date": "2024-05-07T16:11:14Z",
+  "start_date_local": "2024-05-07T18:11:14Z",
+  "timezone": "(GMT+01:00) Europe/Paris",
+  "utc_offset": 7200.0,
+  "location_city": null,
+  "location_state": null,
+  "location_country": null,
+  "achievement_count": 0,
+  "kudos_count": 1,
+  "comment_count": 0,
+  "athlete_count": 1,
+  "photo_count": 0,
+  "map": {
+    "id": "a11354115447",
+    "summary_polyline": "q}hiH_rqLV\\DH`@d@B@FJFDNTHD@FLTFBFL\\\\LX`@\\LCRQ`@HJAF@NNBHHDPRRL\\\\D?T\\LFLLDAJTFDJ@@ANHFHDCFAJHF?RPFAXDJBBH\\HNADN@LB?BHF@LHENE?MFCh@K\\ONCR?XBLAZAEVZLSNE\\JFCLDFC@DZVF@FAHHH@FDF?ZLFNJBPPF\\EfA?XEDA`@BHBXNl@@PDBAJCDBRBBATBLJT?\\BHA?B`@ALB\\AVBJD??DDBGb@@DAFDN?T@FERARF|@ATFPDFD?BPD?BAZNLb@FL?LJRAHBRV`@HF?FJJJPB\\@KGEBEETYFOE?GADI?AAQGWCIBIAGBO?KJA?GJSHQRQHCG?IBGBU@?AO@EGSFg@FQAODO@]BQ@_@Nc@CS@[DSHw@R_@?DAFEDA??A?B@]?MCGBUg@m@EDKKEHAMECIAACG@SMGEMGIKIEGIO?MGCKQOCBEAGIKAOKBSEMMQMECCC?CA[LK?IFIXWXKCCBCWCAG@ADC?EDGCE?MD_@^?@B??DFFC@FDEKMD?B@CB@ABGA?GCGOICEK?QDKJc@dAMLGAa@DKCg@BGC_@@c@CKJs@\\GJ[PMGQ?KEO?QIYDISIBWCMGA@CEG?EO@u@AD@A?BAC@BE??BAEA@AVCFG?GSGEGBECKA]RKBAA@CIGAGC?AMEKAQEC?UGGCG?GLa@AIFGHCHODAFU`@g@HSHg@LOFOHKF_@Ja@JUF[HA@EHw@LOHYLUP{@BCBWFYTYA_@FQD[LM",
+    "resource_state": 2
+  },
+  "trainer": false,
+  "commute": false,
+  "manual": false,
+  "private": false,
+  "visibility": "everyone",
+  "flagged": false,
+  "gear_id": null,
+  "start_latlng": [
+    48.876323690637946,
+    2.226272961124778
+  ],
+  "end_latlng": [
+    48.87534032575786,
+    2.2243027947843075
+  ],
+  "average_speed": 2.29,
+  "max_speed": 4.599,
+  "has_heartrate": false,
+  "heartrate_opt_out": false,
+  "display_hide_heartrate_option": false,
+  "elev_high": 118.8,
+  "elev_low": 59.4,
+  "upload_id": 12126676615,
+  "upload_id_str": "12126676615",
+  "external_id": "stripped_C09D6C82-20CF-4CC1-A42D-0F750806847D-activity.fit",
+  "from_accepted_tag": false,
+  "pr_count": 0,
+  "total_photo_count": 0,
+  "has_kudoed": false
+}
