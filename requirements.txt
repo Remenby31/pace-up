@@ -1,0 +1,9 @@
+flask
+flask-cors
+langchain
+langchain-openai
+icalendar
+pytz
+python-dotenv
+requests
+urllib3

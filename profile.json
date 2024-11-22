@@ -1,0 +1,163 @@
+{
+    "profile": {
+        "age": 32,
+        "poids": 70,
+        "taille": 175,
+        "frequence_hebdomadaire": "3-4 fois par semaine",
+        "meilleure_distance_recente": "10 km",
+        "objectif_principal": "semi marathon",
+        "distance_cible": "21.1 km",
+        "chrono_cible": "1h50",
+        "temps_actuel_5km": "25 minutes",
+        "temps_actuel_10km": "60 minutes",
+        "jours_disponibles_par_semaine": 4,
+        "jour_sortie_longue": "Dimanche",
+        "goal_date": "2025-01-15"
+    },
+    "sessions": [
+        {
+            "date": "2024-11-25 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 10,
+            "description": "Sortie longue à un rythme confortable. Objectif : maintenir une conversation tout au long de la sortie."
+        },
+        {
+            "date": "2024-11-27 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 5,
+            "description": "Échauffement de 10 minutes, puis 5 x 400m à allure rapide avec 2 minutes de récupération entre chaque. Terminer par un retour au calme de 10 minutes."
+        },
+        {
+            "date": "2024-11-30 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 8,
+            "description": "Échauffement de 15 minutes, puis 20 minutes à une allure légèrement plus rapide que l'allure semi-marathon, suivi d'un retour au calme de 15 minutes."
+        },
+        {
+            "date": "2024-12-01 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 12,
+            "description": "Sortie longue à un rythme confortable. Objectif : maintenir une conversation tout au long de la sortie."
+        },
+        {
+            "date": "2024-12-04 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 6,
+            "description": "Échauffement de 10 minutes, puis 4 x 800m à allure rapide avec 3 minutes de récupération entre chaque. Terminer par un retour au calme de 10 minutes."
+        },
+        {
+            "date": "2024-12-07 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 10,
+            "description": "Échauffement de 15 minutes, puis 25 minutes à une allure légèrement plus rapide que l'allure semi-marathon, suivi d'un retour au calme de 15 minutes."
+        },
+        {
+            "date": "2024-12-08 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 14,
+            "description": "Sortie longue à un rythme confortable. Objectif : maintenir une conversation tout au long de la sortie."
+        },
+        {
+            "date": "2024-12-11 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 8,
+            "description": "Échauffement de 10 minutes, puis 5 x 1000m à allure rapide avec 3 minutes de récupération entre chaque. Terminer par un retour au calme de 10 minutes."
+        },
+        {
+            "date": "2024-12-14 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 12,
+            "description": "Échauffement de 15 minutes, puis 30 minutes à une allure légèrement plus rapide que l'allure semi-marathon, suivi d'un retour au calme de 15 minutes."
+        },
+        {
+            "date": "2024-12-15 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 16,
+            "description": "Sortie longue à un rythme confortable. Objectif : maintenir une conversation tout au long de la sortie."
+        },
+        {
+            "date": "2024-12-18 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 10,
+            "description": "Échauffement de 10 minutes, puis 6 x 800m à allure rapide avec 3 minutes de récupération entre chaque. Terminer par un retour au calme de 10 minutes."
+        },
+        {
+            "date": "2024-12-21 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 14,
+            "description": "Échauffement de 15 minutes, puis 35 minutes à une allure légèrement plus rapide que l'allure semi-marathon, suivi d'un retour au calme de 15 minutes."
+        },
+        {
+            "date": "2024-12-22 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 18,
+            "description": "Sortie longue à un rythme confortable. Objectif : maintenir une conversation tout au long de la sortie."
+        },
+        {
+            "date": "2024-12-25 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 12,
+            "description": "Échauffement de 10 minutes, puis 4 x 1.5 km à allure rapide avec 4 minutes de récupération entre chaque. Terminer par un retour au calme de 10 minutes."
+        },
+        {
+            "date": "2024-12-28 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 16,
+            "description": "Échauffement de 15 minutes, puis 40 minutes à une allure légèrement plus rapide que l'allure semi-marathon, suivi d'un retour au calme de 15 minutes."
+        },
+        {
+            "date": "2024-12-29 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 20,
+            "description": "Sortie longue à un rythme confortable. Objectif : maintenir une conversation tout au long de la sortie."
+        },
+        {
+            "date": "2025-01-01 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 10,
+            "description": "Échauffement de 10 minutes, puis 5 x 1 km à allure rapide avec 4 minutes de récupération entre chaque. Terminer par un retour au calme de 10 minutes."
+        },
+        {
+            "date": "2025-01-04 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 8,
+            "description": "Échauffement de 15 minutes, puis 20 minutes à une allure légèrement plus rapide que l'allure semi-marathon, suivi d'un retour au calme de 15 minutes."
+        },
+        {
+            "date": "2025-01-05 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 10,
+            "description": "Sortie longue à un rythme confortable. Objectif : maintenir une conversation tout au long de la sortie."
+        },
+        {
+            "date": "2025-01-08 18:00",
+            "type_de_seance": "Intervalles",
+            "distance": 6,
+            "description": "Échauffement de 10 minutes, puis 4 x 400m à allure rapide avec 2 minutes de récupération entre chaque. Terminer par un retour au calme de 10 minutes."
+        },
+        {
+            "date": "2025-01-11 08:00",
+            "type_de_seance": "Tempo",
+            "distance": 5,
+            "description": "Échauffement de 15 minutes, puis 15 minutes à une allure légèrement plus rapide que l'allure semi-marathon, suivi d'un retour au calme de 15 minutes."
+        },
+        {
+            "date": "2025-01-12 08:00",
+            "type_de_seance": "Sortie Longue",
+            "distance": 8,
+            "description": "Sortie longue à un rythme très tranquille. Préparation pour la course, ne pas dépasser 75% de l'effort maximum."
+        },
+        {
+            "date": "2025-01-14 18:00",
+            "type_de_seance": "Récupération",
+            "distance": 4,
+            "description": "Sortie très légère pour détendre les jambes avant la course. Maintenir un rythme très lent."
+        },
+        {
+            "date": "2025-01-15 09:00",
+            "type_de_seance": "Course",
+            "distance": 21.1,
+            "description": "Jour de la course - semi-marathon. Objectif de terminer en 1h50. Rester concentré et gérer l'effort."
+        }
+    ]
+}

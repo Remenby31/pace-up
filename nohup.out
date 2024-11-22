@@ -1,0 +1,22 @@
+ * Serving Flask app 'app'
+ * Debug mode: on
+[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:18091
+ * Running on http://192.168.1.33:18091
+[33mPress CTRL+C to quit[0m
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 136-315-634
+136.244.116.133 - - [22/Nov/2024 12:24:50] "GET / HTTP/1.1" 200 -
+136.244.116.133 - - [22/Nov/2024 12:24:50] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+136.244.116.133 - - [22/Nov/2024 12:24:50] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+136.244.116.133 - - [22/Nov/2024 12:24:51] "POST /init-program HTTP/1.1" 200 -
+136.244.116.133 - - [22/Nov/2024 12:24:51] "GET /calendar-url HTTP/1.1" 200 -
+136.244.116.133 - - [22/Nov/2024 12:25:20] "GET / HTTP/1.1" 200 -
+136.244.116.133 - - [22/Nov/2024 12:25:20] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+136.244.116.133 - - [22/Nov/2024 12:25:20] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+136.244.116.133 - - [22/Nov/2024 12:25:20] "POST /init-program HTTP/1.1" 200 -
+136.244.116.133 - - [22/Nov/2024 12:25:20] "GET /calendar-url HTTP/1.1" 200 -
+136.244.116.133 - - [22/Nov/2024 12:25:20] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+136.244.116.133 - - [22/Nov/2024 13:20:49] "GET /calendar.ics HTTP/1.1" 200 -

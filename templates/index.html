@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaceUp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-[#f1f1f1] min-h-screen">
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-[#FF6B35] text-center">PaceUp</h1>
+        </header>
+
+        <div class="flex gap-6 h-[calc(100vh-12rem)]">
+            <!-- Left Column - Chat -->
+            <div class="w-1/2 bg-white rounded-lg shadow-lg p-4 flex flex-col">
+                <div id="chat-messages" class="flex-1 overflow-y-auto mb-4 custom-scrollbar">
+                    <!-- Chat messages will be inserted here -->
+                </div>
+                
+                <div class="border-t pt-4">
+                    <form id="chat-form" class="flex gap-2">
+                        <input 
+                            type="text" 
+                            id="message-input"
+                            class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:border-[#FF6B35]"
+                            placeholder="Parlez à votre coach..."
+                        >
+                        <button 
+                            type="submit"
+                            class="px-6 py-2 bg-[#FF6B35] text-white rounded-lg hover:bg-[#FF8B3D] transition-colors"
+                        >
+                            Envoyer
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column - Program -->
+            <div class="w-1/2 bg-white rounded-lg shadow-lg p-4 overflow-y-auto custom-scrollbar">
+                <div id="profile-section">
+                    <!-- Profile info will be inserted here -->
+                </div>
+                
+                <div id="program-section">
+                    <!-- Program will be inserted here -->
+                </div>
+            </div>
+        </div>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
